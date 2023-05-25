@@ -204,8 +204,8 @@ resource "random_password" "ipsec_psk" {
 
 resource "null_resource" "env_file_update" {
   triggers = {
-    VPN_IPSEC_PSK = random_password.ipsec_psk[0].result
-    VPN_PASSWORD = random_password.admin_password[0].result
+    VPN_IPSEC_PSK = try(random_password.ipsec_psk[0].result, "")
+    VPN_PASSWORD = try(random_password.admin_password[0].result, "")
   }
   provisioner "local-exec" {
     command = <<-EOT
