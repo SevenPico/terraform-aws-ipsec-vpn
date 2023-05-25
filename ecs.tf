@@ -120,9 +120,9 @@ module "ecs_ipsec_vpn_service" {
   load_balancer_arn               = module.nlb.nlb_arn
   preserve_security_group_id      = true
   secrets_map = {
-    VPN_IPSEC_PSK : random_password.ipsec_psk[0].result
+    VPN_IPSEC_PSK : try(random_password.ipsec_psk[0].result, "")
     VPN_USER : "vpnuser"
-    VPN_PASSWORD : random_password.admin_password[0].result
+    VPN_PASSWORD : try(random_password.admin_password[0].result, "")
     VPN_DNS_NAME : module.ecs_ipsec_vpn_service_context.dns_name
     VPN_CLIENT_NAME : "vpnclient"
   }
