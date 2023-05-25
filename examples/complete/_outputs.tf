@@ -18,10 +18,4 @@
 ##  ./_outputs.tf
 ##  This file contains code written only by SevenPico, Inc.
 ## ----------------------------------------------------------------------------
-output "nlb_dns_name" {
-  value = one(module.nlb[*].nlb_dns_name)
-}
 
-output "nlb_zone_id" {
-  value = one(module.nlb[*].nlb_zone_id)
-}
