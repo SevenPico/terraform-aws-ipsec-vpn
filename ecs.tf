@@ -203,6 +203,7 @@ resource "random_password" "ipsec_psk" {
 }
 
 resource "null_resource" "env_file_update" {
+  count   = module.ecs_ipsec_vpn_service_context.enabled ? 1 : 0
   triggers = {
     VPN_IPSEC_PSK = try(random_password.ipsec_psk[0].result, "")
     VPN_PASSWORD = try(random_password.admin_password[0].result, "")
