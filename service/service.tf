@@ -37,14 +37,15 @@ module "container_definition" {
     }
   }
 
-  port_mappings = concat(var.container_port_mappings, [
-    var.container_port != null ?
-    {
-      containerPort : var.container_port
-      hostPort : var.container_port
-      protocol : "tcp"
-    } : {}
-  ])
+#  port_mappings = concat(var.container_port_mappings, [
+#    {
+#      containerPort : var.container_port
+#      hostPort : var.container_port
+#      protocol : "tcp"
+#    }
+#  ])
+
+  port_mappings = concat(var.container_port_mappings)
 
   map_secrets = module.secret_context.enabled ? { for key in keys(var.secrets_map) : key => "${module.secret.arn}:${key}:AWSCURRENT:" } : {}
 }
