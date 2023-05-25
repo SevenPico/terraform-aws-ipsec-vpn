@@ -98,14 +98,14 @@ module "ecs_ipsec_vpn_service" {
   container_port                  = null
   container_port_mappings         = [
     {
-      containerPort : 500
-      hostPort : 500
-      protocol : "udp"
+      containerPort = 500
+      hostPort = 500
+      protocol = "udp"
     },
     {
-      containerPort : 4500
-      hostPort : 4500
-      protocol : "udp"
+      containerPort = 4500
+      hostPort = 4500
+      protocol = "udp"
     }
   ]
   desired_task_count              = var.desired_task_count
