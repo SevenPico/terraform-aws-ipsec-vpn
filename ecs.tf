@@ -86,7 +86,6 @@ data "aws_iam_policy_document" "ecs_task_exec_policy_doc" {
 module "ecs_ipsec_vpn_service" {
   source  = "./service"
   context = module.ecs_ipsec_vpn_service_context.self
-  depends_on = [null_resource.env_file_update]
 
   create_listener_tg              = false
   acm_certificate_arn             = var.acm_certificate_arn
@@ -202,19 +201,27 @@ resource "random_password" "ipsec_psk" {
   special = false
 }
 
-resource "null_resource" "env_file_update" {
-  count   = module.ecs_ipsec_vpn_service_context.enabled ? 1 : 0
-  triggers = {
-    VPN_IPSEC_PSK = try(random_password.ipsec_psk[0].result, "")
-    VPN_PASSWORD = try(random_password.admin_password[0].result, "")
-  }
-  provisioner "local-exec" {
-    command = <<-EOT
-      echo "VPN_IPSEC_PSK=${random_password.ipsec_psk[0].result}" > ${path.module}/vpn.env
-      echo "VPN_USER=vpnuser" >> ${path.module}/vpn.env
-      echo "VPN_PASSWORD=${random_password.admin_password[0].result}" >> ${path.module}/vpn.env
-      echo "VPN_DNS_NAME=${module.ecs_ipsec_vpn_service_context.dns_name}" >> ${path.module}/vpn.env
-      echo "VPN_CLIENT_NAME=vpnclient" >> ${path.module}/vpn.env
-    EOT
-  }
-}
+#module "secret_random-password" {
+#  source  = "SevenPico/secret/aws//modules/random-password"
+#  version = "3.2.7"
+#
+#  password_length = 32
+#
+#}
+
+#resource "null_resource" "env_file_update" {
+#  count   = module.ecs_ipsec_vpn_service_context.enabled ? 1 : 0
+#  triggers = {
+#    VPN_IPSEC_PSK = try(random_password.ipsec_psk[0].result, "")
+#    VPN_PASSWORD = try(random_password.admin_password[0].result, "")
+#  }
+#  provisioner "local-exec" {
+#    command = <<-EOT
+#      echo "VPN_IPSEC_PSK=${random_password.ipsec_psk[0].result}" > ${path.module}/vpn.env
+#      echo "VPN_USER=vpnuser" >> ${path.module}/vpn.env
+#      echo "VPN_PASSWORD=${random_password.admin_password[0].result}" >> ${path.module}/vpn.env
+#      echo "VPN_DNS_NAME=${module.ecs_ipsec_vpn_service_context.dns_name}" >> ${path.module}/vpn.env
+#      echo "VPN_CLIENT_NAME=vpnclient" >> ${path.module}/vpn.env
+#    EOT
+#  }
+#}

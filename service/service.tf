@@ -45,7 +45,7 @@ module "container_definition" {
 #    }
 #  ])
 
-  port_mappings = concat(var.container_port_mappings)
+  port_mappings = var.container_port_mappings
 
   map_secrets = module.secret_context.enabled ? { for key in keys(var.secrets_map) : key => "${module.secret.arn}:${key}:AWSCURRENT:" } : {}
 }
