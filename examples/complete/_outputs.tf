@@ -15,9 +15,32 @@
 ## ----------------------------------------------------------------------------
 
 ## ----------------------------------------------------------------------------
-##  ./_outputs.tf
-##  This file contains code written only by SevenPico, Inc.
+##  ./examples/default/_outputs.tf
+##  This file contains code written by SevenPico, Inc.
 ## ----------------------------------------------------------------------------
-output "autoscale_group_name" {
-  value = module.ec2_autoscale_group.autoscaling_group_name
-}
+
+#output "autoscaling_group_arn" {
+#  value = module.vpn.autoscale_group_arn
+#}
+#
+#output "ec2_security_group_id" {
+#  value = module.vpn.security_group_id
+#}
+#
+#output "autoscaling_role_arn" {
+#  value = module.vpn.role_arn
+#}
+#
+#output "autoscaling_lifecycle_role_arn" {
+#  value = module.vpn.lifecycle_role_arn
+#}
+#
+#output "autoscaling_sns_role_arn" {
+#  value = module.vpn.sns_role_arn
+#}
+#
+#output "openvpn_ui_url" {
+#  value = "https://${module.vpn.nlb_dns_name}:${module.vpn.ui_https_port}"
+#}
+
+

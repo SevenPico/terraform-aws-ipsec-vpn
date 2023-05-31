@@ -1,45 +1,3 @@
-## ----------------------------------------------------------------------------
-##  Copyright 2023 SevenPico, Inc.
-##
-##  Licensed under the Apache License, Version 2.0 (the "License");
-##  you may not use this file except in compliance with the License.
-##  You may obtain a copy of the License at
-##
-##     http://www.apache.org/licenses/LICENSE-2.0
-##
-##  Unless required by applicable law or agreed to in writing, software
-##  distributed under the License is distributed on an "AS IS" BASIS,
-##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-##  See the License for the specific language governing permissions and
-##  limitations under the License.
-## ----------------------------------------------------------------------------
-
-## ----------------------------------------------------------------------------
-##  ./_variables.tf
-##  This file contains code written only by SevenPico, Inc.
-## ----------------------------------------------------------------------------
-
-variable "subnet_ids" {
-  type = list(string)
-}
-
-//variable "vpc_cidr_blocks" {
-//  type = list(string)
-//}
-
-variable "vpc_id" {
-  type = string
-}
-
-variable "enable_efs" {
-  type    = bool
-  default = false
-}
-
-
-#------------------------------------------------------------------------------
-# Create Options
-#------------------------------------------------------------------------------
 variable "create_ec2_autoscale_sns_topic" {
   type    = bool
   default = false
@@ -55,10 +13,11 @@ variable "create_vpn_secret" {
   default = true
 }
 
+variable "enable_efs" {
+  type    = bool
+  default = false
+}
 
-#------------------------------------------------------------------------------
-# Enablements
-#------------------------------------------------------------------------------
 variable "enable_custom_ssl" {
   type        = bool
   default     = false
@@ -66,11 +25,6 @@ variable "enable_custom_ssl" {
   When this is true SSL values from the SSL SecretsManager document will be written to the EC2 Instance and OpenVPN will
   use the Certificate instead of default OpenVPN Certificate.
 EOF
-}
-
-variable "enable_backups" {
-  type    = bool
-  default = true
 }
 
 variable "enable_ec2_cloudwatch_logs" {
@@ -81,83 +35,6 @@ variable "enable_ec2_cloudwatch_logs" {
 variable "cloudwatch_logs_expiration_days" {
   type    = number
   default = 90
-}
-
-variable "enable_ssl_cert_updater" {
-  type    = bool
-  default = false
-}
-
-
-#------------------------------------------------------------------------------
-# VPN Inputs
-#------------------------------------------------------------------------------
-variable "vpn_daemon_ports" {
-  default = [500, 4500]
-}
-
-variable "vpn_daemon_ingress_blocks" {
-  type    = list(string)
-  default = ["0.0.0.0/0"]
-}
-
-variable "vpn_ssm_association_output_bucket_name" {
-  type    = string
-  default = null
-}
-
-variable "vpn_secret_admin_password_key" {
-  type    = string
-  default = "ADMIN_PASSWORD"
-}
-
-variable "vpn_secret_arn" {
-  type    = string
-  default = ""
-}
-
-variable "vpn_secret_enable_kms_key_rotation" {
-  type    = bool
-  default = true
-}
-
-variable "vpn_secret_kms_key_arn" {
-  type    = string
-  default = null
-}
-
-variable "vpn_time_zone" {
-  type    = string
-  default = "America/Chicago"
-}
-
-variable "vpn_hostname" {
-  type = string
-}
-
-variable "vpn_version" {
-  type    = string
-  default = ""
-}
-
-
-#------------------------------------------------------------------------------
-# SSL Inputs
-#------------------------------------------------------------------------------
-variable "ssl_secret_arn" {
-  type    = string
-  default = ""
-}
-
-variable "ssl_secret_kms_key_arn" {
-  type    = string
-  default = ""
-}
-
-variable "ssl_sns_topic_arn" {
-  type        = string
-  default     = ""
-  description = "This is required when enable_ssl_cert_updater = true"
 }
 
 variable "ssl_secret_certificate_bundle_keyname" {
@@ -175,10 +52,6 @@ variable "ssl_secret_certificate_private_key_keyname" {
   default = "CERTIFICATE_PRIVATE_KEY"
 }
 
-
-#------------------------------------------------------------------------------
-# EC2 Inputs
-#------------------------------------------------------------------------------
 variable "ec2_associate_public_ip_address" {
   type    = bool
   default = true
@@ -271,10 +144,6 @@ variable "ec2_block_device_mappings" {
   default = []
 }
 
-
-#------------------------------------------------------------------------------
-# NLB Inputs
-#------------------------------------------------------------------------------
 variable "nlb_access_logs_prefix_override" {
   type    = string
   default = null
@@ -305,9 +174,6 @@ variable "nlb_tls_ssl_policy" {
   default = "ELBSecurityPolicy-TLS13-1-2-2021-06"
 }
 
-#------------------------------------------------------------------------------
-# S3 Inputs
-#------------------------------------------------------------------------------
 variable "s3_source_policy_documents" {
   type        = list(string)
   default     = []
@@ -316,6 +182,31 @@ variable "s3_source_policy_documents" {
     Statements defined in source_policy_documents must have unique SIDs.
     Statement having SIDs that match policy SIDs generated by this module will override them.
     EOT
+}
+
+variable "vpn_daemon_ingress_blocks" {
+  type    = list(string)
+  default = ["0.0.0.0/0"]
+}
+
+variable "vpn_secret_admin_password_key" {
+  type    = string
+  default = "ADMIN_PASSWORD"
+}
+
+variable "vpn_secret_arn" {
+  type    = string
+  default = ""
+}
+
+variable "vpn_secret_enable_kms_key_rotation" {
+  type    = bool
+  default = true
+}
+
+variable "vpn_secret_kms_key_arn" {
+  type    = string
+  default = null
 }
 
 variable "s3_access_logs_prefix_override" {
@@ -346,4 +237,16 @@ variable "s3_versioning_enabled" {
 variable "s3_object_ownership" {
   type    = string
   default = "BucketOwnerEnforced"
+}
+
+variable "vpc_cidr_block" {
+  type = string
+}
+
+variable "availability_zones" {
+  type = list(string)
+}
+
+variable "root_domain" {
+  type = string
 }

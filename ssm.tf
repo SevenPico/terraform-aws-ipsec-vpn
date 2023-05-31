@@ -19,9 +19,6 @@
 ##  This file contains code written by SevenPico, Inc.
 ## ---------------------------------------------------------------------------
 
-locals {
-  enable_openvpn_backups = var.enable_openvpn_backups && !var.enable_mysql
-}
 #------------------------------------------------------------------------------
 # Composite Installer Script
 #------------------------------------------------------------------------------
@@ -56,9 +53,9 @@ resource "aws_ssm_association" "composite_installer" {
     values = [module.context.id]
   }
   dynamic "output_location" {
-    for_each = var.openvpn_ssm_association_output_bucket_name != null ? [1] : []
+    for_each = var.vpn_ssm_association_output_bucket_name != null ? [1] : []
     content {
-      s3_bucket_name = var.openvpn_ssm_association_output_bucket_name
+      s3_bucket_name = var.vpn_ssm_association_output_bucket_name
       s3_key_prefix  = try(aws_ssm_document.composite_installer[0].name, "")
     }
   }
@@ -83,8 +80,8 @@ resource "aws_ssm_document" "ec2_initialization" {
 
   tags = module.ec2_initialization_context.tags
   content = templatefile("${path.module}/templates/ssm-ec2-initialization.tftpl", {
-    hostname  = var.openvpn_hostname
-    time_zone = var.openvpn_time_zone
+    hostname  = var.vpn_hostname
+    time_zone = var.vpn_time_zone
     region    = try(data.aws_region.current[0].name, "")
   })
 }
@@ -143,7 +140,7 @@ resource "aws_ssm_document" "install_default" {
 
   tags = module.install_with_defaults_context.tags
   content = templatefile("${path.module}/templates/ssm-install-default.tftpl", {
-    openvpnas_version = var.openvpn_version
+    openvpnas_version = var.vpn_version
   })
 }
 
@@ -168,7 +165,7 @@ resource "aws_ssm_document" "install_with_efs" {
   tags = module.install_with_efs_context.tags
 
   content = templatefile("${path.module}/templates/ssm-install-with-efs.tftpl", {
-    openvpnas_version         = var.openvpn_version
+    openvpnas_version         = var.vpn_version
     efs_mount_target_dns_name = module.efs.mount_target_dns_names[0]
     s3_backup_bucket          = module.backups_bucket.bucket_id
     s3_backup_key             = "backups/openvpn_backup_pre_install.tar.gz"
