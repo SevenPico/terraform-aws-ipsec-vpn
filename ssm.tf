@@ -39,6 +39,7 @@ resource "aws_ssm_document" "composite_installer" {
     ec2_initialization = try(aws_ssm_document.ec2_initialization[0].name, "")
     ec2_upgrade        = try(aws_ssm_document.ec2_upgrade[0].name, "")
     install_document   = try(!var.enable_efs ? aws_ssm_document.install_default[0].name : aws_ssm_document.install_with_efs[0].name, "")
+    configure_ssl      = var.enable_custom_ssl ? try(aws_ssm_document.configure_ssl[0].name, "") : ""
   })
 }
 
