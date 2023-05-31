@@ -109,12 +109,12 @@ resource "aws_lb_target_group" "nlb" {
   target_type          = local.nlb_target_type[count.index]
   deregistration_delay = 300
   health_check {
-    enabled             = false
+    enabled             = true
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
-    protocol            = "HTTPS"
-    port                = 443
+    protocol            = "UDP"
+    port                = var.vpn_daemon_ports[0]
     path                = "/"
   }
   lifecycle {
