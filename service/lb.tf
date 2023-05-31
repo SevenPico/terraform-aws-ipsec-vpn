@@ -12,7 +12,7 @@ locals {
 # Target Group and Listener
 # ------------------------------------------------------------------------------
 resource "aws_lb_target_group" "default" {
-  count                = local.lb_enabled && var.create_listener_tg ? 1 : 0
+  count                = local.lb_enabled && var.create_target_group ? 1 : 0
   name                 = module.lb_context.id
   port                 = var.container_port
   protocol             = var.target_group_protocol
@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "default" {
 }
 
 resource "aws_lb_listener" "default" {
-  count             = local.lb_enabled && var.create_listener_tg ? 1 : 0
+  count             = local.lb_enabled && var.create_target_group ? 1 : 0
   load_balancer_arn = var.load_balancer_arn
   port              = 443
   protocol          = var.listener_protocol
@@ -48,7 +48,7 @@ resource "aws_lb_listener" "default" {
 }
 
 locals {
-  load_balancers = module.lb_context.enabled && var.create_listener_tg ? {
+  load_balancers = module.lb_context.enabled && var.create_target_group ? {
     lb-1 : {
       elb_name : null
       target_group_arn : join("", aws_lb_target_group.default.*.arn)

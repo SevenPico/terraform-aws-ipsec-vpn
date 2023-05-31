@@ -114,7 +114,7 @@ variable "load_balancer_arn" {
   type    = string
 }
 
-variable "create_listener_tg" {
+variable "create_target_group" {
   type    = bool
 }
 

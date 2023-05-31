@@ -112,7 +112,7 @@ module "service" {
   assign_public_ip                   = var.assign_public_ip
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
-  health_check_grace_period_seconds  = var.create_listener_tg ? 10 : 0
+  health_check_grace_period_seconds  = var.create_target_group ? 10 : 0
   enable_ecs_managed_tags            = true
   security_group_enabled             = false
   security_group_description         = ""

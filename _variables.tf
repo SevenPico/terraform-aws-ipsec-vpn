@@ -100,3 +100,13 @@ variable "nlb_tls_ssl_policy" {
   type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-2021-06"
 }
+
+variable "assign_public_ip" {
+  type    = bool
+  default = false
+}
+
+variable "container_image" {
+  type    = string
+  default = "hwdsl2/ipsec-vpn-server"
+}
