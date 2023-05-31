@@ -1,0 +1,13 @@
+---
+schemaVersion: "2.2"
+description: Install and configure OpenVPN.
+mainSteps:
+  - action: aws:runShellScript
+    name: installConfigureOpenvpn
+    inputs:
+      timeoutSeconds: '300'
+      runCommand:
+        - |
+          #!/bin/bash
+
+          echo "hello world."
