@@ -113,8 +113,8 @@ resource "aws_lb_target_group" "nlb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
-    protocol            = "UDP"
-    port                = var.vpn_daemon_ports[0]
+    protocol            = "TCP"
+    port                = 443
     path                = "/"
   }
   lifecycle {
