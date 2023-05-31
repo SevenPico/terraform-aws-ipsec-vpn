@@ -21,3 +21,11 @@
 output "autoscale_group_name" {
   value = module.ec2_autoscale_group.autoscaling_group_name
 }
+
+output "nlb_dns_name" {
+  value = one(module.nlb[*].nlb_dns_name)
+}
+
+output "nlb_zone_id" {
+  value = one(module.nlb[*].nlb_zone_id)
+}

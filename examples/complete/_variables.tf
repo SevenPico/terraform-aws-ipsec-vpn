@@ -5,7 +5,7 @@ variable "create_ec2_autoscale_sns_topic" {
 
 variable "create_nlb" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "create_vpn_secret" {
@@ -22,8 +22,8 @@ variable "enable_custom_ssl" {
   type        = bool
   default     = false
   description = <<EOF
-  When this is true SSL values from the SSL SecretsManager document will be written to the EC2 Instance and OpenVPN will
-  use the Certificate instead of default OpenVPN Certificate.
+  When this is true SSL values from the SSL SecretsManager document will be written to the EC2 Instance and VPN will
+  use the Certificate instead of default VPN Certificate.
 EOF
 }
 

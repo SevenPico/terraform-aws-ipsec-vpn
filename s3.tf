@@ -19,20 +19,19 @@
 ##  This file contains code written by SevenPico, Inc.
 ## ----------------------------------------------------------------------------
 
-module "backups_bucket_context" {
+module "s3_bucket_context" {
   source     = "SevenPico/context/null"
   version    = "2.0.0"
   context    = module.context.self
-  enabled    = module.context.enabled && var.enable_backups
-  attributes = ["backups"]
+  enabled    = module.context.enabled
 }
 
 
 # ------------------------------------------------------------------------------
-# Openvpn S3 Bucket Policy
+# vpn S3 Bucket Policy
 # ------------------------------------------------------------------------------
-data "aws_iam_policy_document" "backups_bucket" {
-  count                   = module.backups_bucket_context.enabled ? 1 : 0
+data "aws_iam_policy_document" "s3_bucket" {
+  count                   = module.s3_bucket_context.enabled ? 1 : 0
   source_policy_documents = var.s3_source_policy_documents
 
   statement {
@@ -40,8 +39,8 @@ data "aws_iam_policy_document" "backups_bucket" {
     effect  = "Deny"
     actions = ["s3:*"]
     resources = [
-      module.backups_bucket.bucket_arn,
-      "${module.backups_bucket.bucket_arn}/*"
+      module.s3_bucket.bucket_arn,
+      "${module.s3_bucket.bucket_arn}/*"
     ]
 
     principals {
@@ -61,10 +60,10 @@ data "aws_iam_policy_document" "backups_bucket" {
 #------------------------------------------------------------------------------
 # VPN ASG Scripts Bucket
 #------------------------------------------------------------------------------
-module "backups_bucket" {
+module "s3_bucket" {
   source  = "SevenPicoForks/s3-bucket/aws"
   version = "4.0.4"
-  context = module.backups_bucket_context.self
+  context = module.s3_bucket_context.self
 
   acl                          = "private"
   allow_encrypted_uploads_only = false
@@ -103,7 +102,7 @@ module "backups_bucket" {
   s3_replication_enabled        = false
   s3_replication_rules          = null
   s3_replication_source_roles   = []
-  source_policy_documents       = data.aws_iam_policy_document.backups_bucket[*].json
+  source_policy_documents       = data.aws_iam_policy_document.s3_bucket[*].json
   sse_algorithm                 = "AES256"
   transfer_acceleration_enabled = false
   user_enabled                  = false

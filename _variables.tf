@@ -63,14 +63,9 @@ variable "enable_custom_ssl" {
   type        = bool
   default     = false
   description = <<EOF
-  When this is true SSL values from the SSL SecretsManager document will be written to the EC2 Instance and OpenVPN will
-  use the Certificate instead of default OpenVPN Certificate.
+  When this is true SSL values from the SSL SecretsManager document will be written to the EC2 Instance and VPN will
+  use the Certificate instead of default VPN Certificate.
 EOF
-}
-
-variable "enable_backups" {
-  type    = bool
-  default = true
 }
 
 variable "enable_ec2_cloudwatch_logs" {

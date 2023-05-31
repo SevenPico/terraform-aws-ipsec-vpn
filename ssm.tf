@@ -168,7 +168,7 @@ resource "aws_ssm_document" "install_with_efs" {
   content = templatefile("${path.module}/templates/ssm-install-with-efs.tftpl", {
     openvpnas_version         = var.vpn_version
     efs_mount_target_dns_name = module.efs.mount_target_dns_names[0]
-    s3_backup_bucket          = module.backups_bucket.bucket_id
+    s3_backup_bucket          = module.s3_bucket.bucket_id
     s3_backup_key             = "backups/openvpn_backup_pre_install.tar.gz"
   })
 }

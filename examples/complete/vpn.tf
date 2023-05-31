@@ -185,3 +185,5 @@ resource "null_resource" "vpn_set_autoscale_counts" {
     ])
   }
 }
+
+
