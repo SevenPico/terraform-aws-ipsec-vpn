@@ -113,7 +113,7 @@ resource "aws_lb_target_group" "nlb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
-    protocol            = "TCP"
+    protocol            = "HTTPS"
     port                = 443
     path                = "/"
   }
