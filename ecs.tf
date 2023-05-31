@@ -147,7 +147,7 @@ module "ecs_ipsec_vpn_service" {
     }
   ]
   security_group_rules_map   = {}
-  service_command            = ["./${path.module}/run.sh"]
+  service_command            = []
   #service_role_policy_docs   = []
   target_group_protocol      = ""
   target_group_type          = ""

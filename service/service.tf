@@ -15,17 +15,54 @@ module "container_definition" {
   entrypoint      = var.container_entrypoint
 
   linux_parameters = {
-    capabilities = {
-      add  = []
-      drop = []
+    "capabilities": {
+      "add": ["NET_ADMIN"]
     }
-    devices            = []
+    devices            = ["/dev/ppp"]
     initProcessEnabled = true
     maxSwap            = null
     sharedMemorySize   = null
     swappiness         = null
     tmpfs              = []
   }
+  system_controls = [
+    {
+         "namespace":"net.ipv4.ip_forward",
+         "value":"1"
+    },
+    {
+         "namespace":"net.ipv4.conf.all.accept_redirects",
+         "value":"0"
+    },
+    {
+         "namespace":"net.ipv4.conf.all.send_redirects",
+         "value":"0"
+    },
+    {
+         "namespace":"net.ipv4.conf.all.rp_filter",
+         "value":"0"
+    },
+    {
+         "namespace":"net.ipv4.conf.default.accept_redirects",
+         "value":"0"
+    },
+    {
+         "namespace":"net.ipv4.conf.default.send_redirects",
+         "value":"0"
+    },
+    {
+         "namespace":"net.ipv4.conf.default.rp_filter",
+         "value":"0"
+    },
+    {
+         "namespace":"net.ipv4.conf.eth0.send_redirects",
+         "value":"0"
+    },
+    {
+         "namespace":"net.ipv4.conf.eth0.rp_filter",
+         "value":"0"
+    }
+  ]
 
   log_configuration = {
     logDriver : "awslogs"
@@ -36,14 +73,6 @@ module "container_definition" {
       awslogs-stream-prefix : "s"
     }
   }
-
-#  port_mappings = concat(var.container_port_mappings, [
-#    {
-#      containerPort : var.container_port
-#      hostPort : var.container_port
-#      protocol : "tcp"
-#    }
-#  ])
 
   port_mappings = var.container_port_mappings
 
