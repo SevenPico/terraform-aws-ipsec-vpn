@@ -16,7 +16,7 @@ module "container_definition" {
 
   linux_parameters = {
     "capabilities" : {
-      "add" : ["NET_ADMIN"]
+      "add" : []
       "drop" : []
     }
     devices = []
