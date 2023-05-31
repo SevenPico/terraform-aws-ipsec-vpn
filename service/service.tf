@@ -15,10 +15,11 @@ module "container_definition" {
   entrypoint      = var.container_entrypoint
 
   linux_parameters = {
-    "capabilities": {
-      "add": ["NET_ADMIN"]
+    "capabilities" : {
+      "add" : ["NET_ADMIN"]
+      "drop" : []
     }
-    devices            = ["/dev/ppp"]
+    devices = []
     initProcessEnabled = true
     maxSwap            = null
     sharedMemorySize   = null
@@ -27,47 +28,47 @@ module "container_definition" {
   }
   system_controls = [
     {
-         "namespace":"net.ipv4.ip_forward",
-         "value":"1"
+      "namespace" : "net.ipv4.ip_forward",
+      "value" : "1"
     },
     {
-         "namespace":"net.ipv4.conf.all.accept_redirects",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.all.accept_redirects",
+      "value" : "0"
     },
     {
-         "namespace":"net.ipv4.conf.all.send_redirects",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.all.send_redirects",
+      "value" : "0"
     },
     {
-         "namespace":"net.ipv4.conf.all.rp_filter",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.all.rp_filter",
+      "value" : "0"
     },
     {
-         "namespace":"net.ipv4.conf.default.accept_redirects",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.default.accept_redirects",
+      "value" : "0"
     },
     {
-         "namespace":"net.ipv4.conf.default.send_redirects",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.default.send_redirects",
+      "value" : "0"
     },
     {
-         "namespace":"net.ipv4.conf.default.rp_filter",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.default.rp_filter",
+      "value" : "0"
     },
     {
-         "namespace":"net.ipv4.conf.eth0.send_redirects",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.eth0.send_redirects",
+      "value" : "0"
     },
     {
-         "namespace":"net.ipv4.conf.eth0.rp_filter",
-         "value":"0"
+      "namespace" : "net.ipv4.conf.eth0.rp_filter",
+      "value" : "0"
     }
   ]
 
   log_configuration = {
     logDriver : "awslogs"
     options : {
-      awslogs-region : try(data.aws_region.current[0].name,"")
+      awslogs-region : try(data.aws_region.current[0].name, "")
       awslogs-create-group : "true"
       awslogs-group : var.cloudwatch_log_group_name
       awslogs-stream-prefix : "s"
@@ -95,10 +96,10 @@ module "service" {
 
   security_group_ids = [module.security_group.id]
 
-  service_role_arn   = ""
+  service_role_arn = ""
 
-  task_policy_documents = length(var.task_role_policy_docs)>0 ? [ try(data.aws_iam_policy_document.task_policy_doc[0].json, "") ] : []
-  task_exec_policy_documents = [ try(data.aws_iam_policy_document.task_exec_policy_doc[0].json, "") ]
+  task_policy_documents      = length(var.task_role_policy_docs) > 0 ? [try(data.aws_iam_policy_document.task_policy_doc[0].json, "")] : []
+  task_exec_policy_documents = [try(data.aws_iam_policy_document.task_exec_policy_doc[0].json, "")]
 
   vpc_id          = var.vpc_id
   ecs_cluster_arn = var.cluster_arn
@@ -159,7 +160,7 @@ module "security_group" {
   version = "3.0.0"
   context = module.context.self
 
-  allow_all_egress           = true  #changed from false
+  allow_all_egress           = true #changed from false
   create_before_destroy      = var.security_group_create_before_destroy
   preserve_security_group_id = var.preserve_security_group_id
   rules                      = var.security_group_rules
