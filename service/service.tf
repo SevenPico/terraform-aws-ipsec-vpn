@@ -26,44 +26,44 @@ module "container_definition" {
     swappiness         = null
     tmpfs              = []
   }
-  system_controls = [
-    {
-      "namespace" : "net.ipv4.ip_forward",
-      "value" : "1"
-    },
-    {
-      "namespace" : "net.ipv4.conf.all.accept_redirects",
-      "value" : "0"
-    },
-    {
-      "namespace" : "net.ipv4.conf.all.send_redirects",
-      "value" : "0"
-    },
-    {
-      "namespace" : "net.ipv4.conf.all.rp_filter",
-      "value" : "0"
-    },
-    {
-      "namespace" : "net.ipv4.conf.default.accept_redirects",
-      "value" : "0"
-    },
-    {
-      "namespace" : "net.ipv4.conf.default.send_redirects",
-      "value" : "0"
-    },
-    {
-      "namespace" : "net.ipv4.conf.default.rp_filter",
-      "value" : "0"
-    },
-    {
-      "namespace" : "net.ipv4.conf.eth0.send_redirects",
-      "value" : "0"
-    },
-    {
-      "namespace" : "net.ipv4.conf.eth0.rp_filter",
-      "value" : "0"
-    }
-  ]
+#  system_controls = [
+#    {
+#      "namespace" : "net.ipv4.ip_forward",
+#      "value" : "1"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.all.accept_redirects",
+#      "value" : "0"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.all.send_redirects",
+#      "value" : "0"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.all.rp_filter",
+#      "value" : "0"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.default.accept_redirects",
+#      "value" : "0"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.default.send_redirects",
+#      "value" : "0"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.default.rp_filter",
+#      "value" : "0"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.eth0.send_redirects",
+#      "value" : "0"
+#    },
+#    {
+#      "namespace" : "net.ipv4.conf.eth0.rp_filter",
+#      "value" : "0"
+#    }
+#  ]
 
   log_configuration = {
     logDriver : "awslogs"
