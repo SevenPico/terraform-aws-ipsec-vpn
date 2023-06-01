@@ -175,7 +175,7 @@ module "ec2_autoscale_group_sg" {
 resource "aws_security_group_rule" "daemon_tcp_port" {
   count             = module.context.enabled ? length(var.vpn_daemon_ports) : 0
   from_port         = var.vpn_daemon_ports[count.index]
-  protocol          = "tcp"
+  protocol          = "udp"
   security_group_id = module.ec2_autoscale_group_sg.id
   to_port           = var.vpn_daemon_ports[count.index]
   type              = "ingress"
