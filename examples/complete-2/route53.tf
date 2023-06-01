@@ -53,15 +53,15 @@ resource "aws_route53_zone" "private" {
 # ------------------------------------------------------------------------------
 # VPN NLB DNS Records
 # ------------------------------------------------------------------------------
-resource "aws_route53_record" "nlb" {
-  count   = module.vpn_context.enabled ? 1 : 0
-  zone_id = aws_route53_zone.public[0].id
-  name    = module.vpn_context.dns_name
-  type    = "A"
-  alias {
-    name                   = module.vpn.nlb_dns_name
-    zone_id                = module.vpn.nlb_zone_id
-    evaluate_target_health = true
-  }
-}
+#resource "aws_route53_record" "nlb" {
+#  count   = module.vpn_context.enabled ? 1 : 0
+#  zone_id = aws_route53_zone.public[0].id
+#  name    = module.vpn_context.dns_name
+#  type    = "A"
+#  alias {
+#    name                   = module.vpn.nlb_dns_name
+#    zone_id                = module.vpn.nlb_zone_id
+#    evaluate_target_health = true
+#  }
+#}
 
