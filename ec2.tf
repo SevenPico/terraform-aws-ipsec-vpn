@@ -139,7 +139,7 @@ module "ec2_autoscale_group" {
     "instance",
     "volume"
   ]
-  target_group_arns         = var.create_nlb ? compact(aws_lb_target_group.nlb.*.arn) : []
+  target_group_arns         = compact(aws_lb_target_group.nlb.*.arn)
   termination_policies      = ["Default"]
   user_data_base64          = base64encode("")
   wait_for_capacity_timeout = "10m"

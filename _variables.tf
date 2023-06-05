@@ -36,6 +36,10 @@ variable "enable_efs" {
   default = false
 }
 
+variable "enable_upgrade_vpn" {
+  type = bool
+  default = false
+}
 
 #------------------------------------------------------------------------------
 # Create Options

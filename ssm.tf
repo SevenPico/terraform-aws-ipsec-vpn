@@ -140,38 +140,36 @@ resource "aws_ssm_document" "install_default" {
   document_type   = "Command"
 
   tags = module.install_with_defaults_context.tags
-  content = templatefile("${path.module}/templates/ssm-install-default.tftpl", {
-    openvpnas_version = var.vpn_version
-  })
+  content = templatefile("${path.module}/templates/ssm-install-default.tftpl",{})
 }
 
 
 #------------------------------------------------------------------------------
 # Install with EFS
 #------------------------------------------------------------------------------
-module "install_with_efs_context" {
-  source     = "SevenPico/context/null"
-  version    = "2.0.0"
-  context    = module.context.self
-  enabled    = module.context.enabled && var.enable_efs
-  attributes = ["install", "with", "efs"]
-}
-
-resource "aws_ssm_document" "install_with_efs" {
-  count           = module.install_with_efs_context.enabled && var.enable_efs ? 1 : 0
-  name            = module.install_with_efs_context.id
-  document_format = "YAML"
-  document_type   = "Command"
-
-  tags = module.install_with_efs_context.tags
-
-  content = templatefile("${path.module}/templates/ssm-install-with-efs.tftpl", {
-    openvpnas_version         = var.vpn_version
-    efs_mount_target_dns_name = module.efs.mount_target_dns_names[0]
-    s3_backup_bucket          = module.s3_bucket.bucket_id
-    s3_backup_key             = "backups/openvpn_backup_pre_install.tar.gz"
-  })
-}
+#module "install_with_efs_context" {
+#  source     = "SevenPico/context/null"
+#  version    = "2.0.0"
+#  context    = module.context.self
+#  enabled    = module.context.enabled && var.enable_efs
+#  attributes = ["install", "with", "efs"]
+#}
+#
+#resource "aws_ssm_document" "install_with_efs" {
+#  count           = module.install_with_efs_context.enabled && var.enable_efs ? 1 : 0
+#  name            = module.install_with_efs_context.id
+#  document_format = "YAML"
+#  document_type   = "Command"
+#
+#  tags = module.install_with_efs_context.tags
+#
+#  content = templatefile("${path.module}/templates/ssm-install-with-efs.tftpl", {
+#    openvpnas_version         = var.vpn_version
+#    efs_mount_target_dns_name = module.efs.mount_target_dns_names[0]
+#    s3_backup_bucket          = module.s3_bucket.bucket_id
+#    s3_backup_key             = "backups/openvpn_backup_pre_install.tar.gz"
+#  })
+#}
 
 
 #------------------------------------------------------------------------------
@@ -220,7 +218,7 @@ resource "aws_ssm_document" "configure_user" {
   document_type   = "Command"
 
   tags = module.configure_user_context.tags
-  content = templatefile("${path.module}/templates/ssm-vpn-add_user.tftpl", {
+  content = templatefile("${path.module}/templates/ssm-vpn-add-user.tftpl", {
     VPN_USER = var.vpn_user == null ? "" : var.vpn_user
     VPN_PASSWORD = var.vpn_password == null ? "" : var.vpn_password
   })
@@ -228,30 +226,24 @@ resource "aws_ssm_document" "configure_user" {
 
 
 #------------------------------------------------------------------------------
-# Vpn Ugrade
+# Vpn Upgrade
 #------------------------------------------------------------------------------
-variable "enable_upgarde_vpn" {
-  default = ""
-}
-module "upgarde_vpn_context" {
+module "upgrade_vpn_context" {
   source     = "SevenPico/context/null"
   version    = "2.0.0"
   context    = module.context.self
-  enabled    = module.context.enabled && var.enable_upgarde_vpn
-  attributes = ["configure", "user"]
+  enabled    = module.context.enabled && var.enable_upgrade_vpn
+  attributes = ["upgrade", "vpn"]
 }
 
-resource "aws_ssm_document" "upgarde_vpn_context" {
+resource "aws_ssm_document" "upgrade_vpn" {
   count           = module.configure_user_context.enabled ? 1 : 0
   name            = module.configure_user_context.id
   document_format = "YAML"
   document_type   = "Command"
 
   tags = module.configure_user_context.tags
-  content = templatefile("${path.module}/templates/ssm-vpn-upgrade.tftpl", {
-    VPN_USER = var.vpn_user == null ? "" : var.vpn_user
-    VPN_PASSWORD = var.vpn_password == null ? "" : var.vpn_password
-  })
+  content = templatefile("${path.module}/templates/ssm-vpn-upgrade.tftpl", {})
 }
 
 
