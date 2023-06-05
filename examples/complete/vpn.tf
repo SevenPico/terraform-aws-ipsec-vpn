@@ -66,7 +66,6 @@ module "vpn" {
 
   # Create Options
   create_ec2_autoscale_sns_topic = var.create_ec2_autoscale_sns_topic
-  create_nlb                     = var.create_nlb
   create_vpn_secret              = var.create_vpn_secret
 
   # Enablements
