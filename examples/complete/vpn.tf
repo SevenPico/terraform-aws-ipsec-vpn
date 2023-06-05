@@ -151,6 +151,8 @@ module "vpn" {
   vpn_secret_arn                      = var.vpn_secret_arn
   vpn_secret_enable_kms_key_rotation  = var.vpn_secret_enable_kms_key_rotation
   vpn_secret_kms_key_arn              = var.vpn_secret_kms_key_arn
+  vpn_user = null
+  vpn_password = null
   s3_object_ownership                 = var.s3_object_ownership
 }
 
