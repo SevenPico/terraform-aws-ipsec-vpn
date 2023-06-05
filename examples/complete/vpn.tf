@@ -74,6 +74,7 @@ module "vpn" {
   enable_custom_ssl = var.enable_custom_ssl
   #  enable_mysql               = var.enable_mysql
   enable_ec2_cloudwatch_logs = var.enable_ec2_cloudwatch_logs
+  enable_upgarde_vpn = false
 
   # Logging
   cloudwatch_logs_expiration_days = var.cloudwatch_logs_expiration_days
@@ -126,19 +127,6 @@ module "vpn" {
       source_security_group_id = null
       self                     = null
       description              = "Allow ingress from 4500."
-    },
-    {
-      key       = "egress-to-vpc-443"
-      type      = "egress"
-      from_port = 443
-      to_port   = 443
-      protocol  = "tcp"
-      cidr_blocks = [
-      module.vpc.vpc_cidr_block]
-      ipv6_cidr_blocks         = []
-      source_security_group_id = null
-      self                     = null
-      description              = "Allow https egress to VPC."
     },
   ]
 

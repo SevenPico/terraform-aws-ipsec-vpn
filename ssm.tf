@@ -202,3 +202,56 @@ resource "aws_ssm_document" "configure_ssl" {
 }
 
 
+#------------------------------------------------------------------------------
+# Configure User
+#------------------------------------------------------------------------------
+module "configure_user_context" {
+  source     = "SevenPico/context/null"
+  version    = "2.0.0"
+  context    = module.context.self
+  enabled    = module.context.enabled && var.enable_custom_ssl
+  attributes = ["configure", "user"]
+}
+
+resource "aws_ssm_document" "configure_user" {
+  count           = module.configure_user_context.enabled ? 1 : 0
+  name            = module.configure_user_context.id
+  document_format = "YAML"
+  document_type   = "Command"
+
+  tags = module.configure_user_context.tags
+  content = templatefile("${path.module}/templates/ssm-vpn-add_user.tftpl", {
+    VPN_USER = var.vpn_user == null ? "" : var.vpn_user
+    VPN_PASSWORD = var.vpn_password == null ? "" : var.vpn_password
+  })
+}
+
+
+#------------------------------------------------------------------------------
+# Vpn Ugrade
+#------------------------------------------------------------------------------
+variable "enable_upgarde_vpn" {
+  default = ""
+}
+module "upgarde_vpn_context" {
+  source     = "SevenPico/context/null"
+  version    = "2.0.0"
+  context    = module.context.self
+  enabled    = module.context.enabled && var.enable_upgarde_vpn
+  attributes = ["configure", "user"]
+}
+
+resource "aws_ssm_document" "upgarde_vpn_context" {
+  count           = module.configure_user_context.enabled ? 1 : 0
+  name            = module.configure_user_context.id
+  document_format = "YAML"
+  document_type   = "Command"
+
+  tags = module.configure_user_context.tags
+  content = templatefile("${path.module}/templates/ssm-vpn-upgrade.tftpl", {
+    VPN_USER = var.vpn_user == null ? "" : var.vpn_user
+    VPN_PASSWORD = var.vpn_password == null ? "" : var.vpn_password
+  })
+}
+
+

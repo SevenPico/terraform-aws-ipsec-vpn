@@ -45,11 +45,6 @@ variable "create_ec2_autoscale_sns_topic" {
   default = false
 }
 
-variable "create_nlb" {
-  type    = bool
-  default = false
-}
-
 variable "create_vpn_secret" {
   type    = bool
   default = true
@@ -132,6 +127,13 @@ variable "vpn_hostname" {
 
 variable "vpn_version" {
   type    = string
+  default = ""
+}
+
+variable "vpn_user" {
+  default = ""
+}
+variable "vpn_password" {
   default = ""
 }
 

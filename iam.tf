@@ -99,7 +99,7 @@ data "aws_iam_policy_document" "ec2_autoscale_group_role_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::${module.s3_bucket.bucket_id}/backups/*"
+      "arn:aws:s3:::${module.s3_bucket.bucket_id}/*"
     ]
   }
   statement {
