@@ -192,8 +192,8 @@ mainSteps:
 
             check_subnets() {
               if [ -s /etc/ipsec.conf ] && grep -qs "hwdsl2 VPN script" /etc/sysctl.conf; then
-                L2TP_NET=${VPN_L2TP_NET:-'192.168.42.0/24'}
-                XAUTH_NET=${VPN_XAUTH_NET:-'192.168.43.0/24'}
+                L2TP_NET="$${VPN_L2TP_NET:-"192.168.42.0/24"}"
+                XAUTH_NET="$${VPN_XAUTH_NET:-"192.168.43.0/24"}"
                 if ! grep -q "$L2TP_NET" /etc/ipsec.conf \
                   || ! grep -q "$XAUTH_NET" /etc/ipsec.conf; then
                   echo "Error: The custom VPN subnets specified do not match initial install." >&2
@@ -257,7 +257,7 @@ mainSteps:
             }
 
             detect_ip() {
-              public_ip=${VPN_PUBLIC_IP:-''}
+              public_ip="$${VPN_PUBLIC_IP:-""}"
               check_ip "$public_ip" || get_default_ip
               check_ip "$public_ip" && return 0
               bigecho "Trying to auto discover IP of this server..."
@@ -424,13 +424,13 @@ mainSteps:
 
             create_vpn_config() {
               bigecho "Creating VPN configuration..."
-              L2TP_NET=${VPN_L2TP_NET:-'192.168.42.0/24'}
-              L2TP_LOCAL=${VPN_L2TP_LOCAL:-'192.168.42.1'}
-              L2TP_POOL=${VPN_L2TP_POOL:-'192.168.42.10-192.168.42.250'}
-              XAUTH_NET=${VPN_XAUTH_NET:-'192.168.43.0/24'}
-              XAUTH_POOL=${VPN_XAUTH_POOL:-'192.168.43.10-192.168.43.250'}
-              DNS_SRV1=${VPN_DNS_SRV1:-'8.8.8.8'}
-              DNS_SRV2=${VPN_DNS_SRV2:-'8.8.4.4'}
+              L2TP_NET="$${VPN_L2TP_NET:-"192.168.42.0/24"}"
+              L2TP_LOCAL="$${VPN_L2TP_LOCAL:-"192.168.42.1"}"
+              L2TP_POOL="$${VPN_L2TP_POOL:-"192.168.42.10-192.168.42.250"}"
+              XAUTH_NET="$${VPN_XAUTH_NET:-"192.168.43.0/24"}"
+              XAUTH_POOL="$${VPN_XAUTH_POOL:-"192.168.43.10-192.168.43.250"}"
+              DNS_SRV1="$${VPN_DNS_SRV1:-"8.8.8.8"}"
+              DNS_SRV2="$${VPN_DNS_SRV2:-"8.8.4.4"}"
               DNS_SRVS="\"$DNS_SRV1 $DNS_SRV2\""
               [ -n "$VPN_DNS_SRV1" ] && [ -z "$VPN_DNS_SRV2" ] && DNS_SRVS="$DNS_SRV1"
               # Create IPsec config

@@ -147,29 +147,29 @@ resource "aws_ssm_document" "install_default" {
 #------------------------------------------------------------------------------
 # Install with EFS
 #------------------------------------------------------------------------------
-#module "install_with_efs_context" {
-#  source     = "SevenPico/context/null"
-#  version    = "2.0.0"
-#  context    = module.context.self
-#  enabled    = module.context.enabled && var.enable_efs
-#  attributes = ["install", "with", "efs"]
-#}
-#
-#resource "aws_ssm_document" "install_with_efs" {
-#  count           = module.install_with_efs_context.enabled && var.enable_efs ? 1 : 0
-#  name            = module.install_with_efs_context.id
-#  document_format = "YAML"
-#  document_type   = "Command"
-#
-#  tags = module.install_with_efs_context.tags
-#
-#  content = templatefile("${path.module}/templates/ssm-install-with-efs.tftpl", {
-#    openvpnas_version         = var.vpn_version
-#    efs_mount_target_dns_name = module.efs.mount_target_dns_names[0]
-#    s3_backup_bucket          = module.s3_bucket.bucket_id
-#    s3_backup_key             = "backups/openvpn_backup_pre_install.tar.gz"
-#  })
-#}
+module "install_with_efs_context" {
+  source     = "SevenPico/context/null"
+  version    = "2.0.0"
+  context    = module.context.self
+  enabled    = module.context.enabled && var.enable_efs
+  attributes = ["install", "with", "efs"]
+}
+
+resource "aws_ssm_document" "install_with_efs" {
+  count           = module.install_with_efs_context.enabled && var.enable_efs ? 1 : 0
+  name            = module.install_with_efs_context.id
+  document_format = "YAML"
+  document_type   = "Command"
+
+  tags = module.install_with_efs_context.tags
+
+  content = templatefile("${path.module}/templates/ssm-install-with-efs.tftpl", {
+    openvpnas_version         = var.vpn_version
+    efs_mount_target_dns_name = module.efs.mount_target_dns_names[0]
+    s3_backup_bucket          = module.s3_bucket.bucket_id
+    s3_backup_key             = "backups/openvpn_backup_pre_install.tar.gz"
+  })
+}
 
 
 #------------------------------------------------------------------------------
