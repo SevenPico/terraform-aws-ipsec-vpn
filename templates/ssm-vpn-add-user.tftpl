@@ -5,11 +5,9 @@ parameters:
   USER:
     description: Vpn User To Add.
     type: String
-    default : ""
   PASSWORD:
     description: Vpn User Password.
     type: String
-    default : ""
 mainSteps:
   - action: aws:runShellScript
     name: AddVpnUser
