@@ -39,7 +39,7 @@ module "vpc_subnets_context" {
 #------------------------------------------------------------------------------
 module "vpc" {
   source  = "registry.terraform.io/SevenPico/vpc/aws"
-  version = "3.0.0"
+  version = "3.0.1"
   context = module.vpc_context.self
 
   assign_generated_ipv6_cidr_block          = false
@@ -66,8 +66,8 @@ module "vpc" {
 # VPC Subnets
 #------------------------------------------------------------------------------
 module "vpc_subnets" {
-  source = "git::https://github.com/SevenPico/terraform-aws-dynamic-subnets.git?ref=feature/3.1.0_outpost_support" # "registry.terraform.io/SevenPico/dynamic-subnets/aws"
-  #  version = "3.0.0"
+  source = "SevenPico/dynamic-subnets/aws" # "registry.terraform.io/SevenPico/dynamic-subnets/aws"
+  version = "3.0.1"
   context = module.vpc_subnets_context.self
 
   availability_zone_attribute_style        = "short"

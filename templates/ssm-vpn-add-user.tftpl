@@ -59,7 +59,7 @@ mainSteps:
               fi
               VPN_USER=$1
               VPN_PASSWORD=$2
-              if [ -z "$VPN_USER" ] || [ -z "$VPN_PASSWORD" ]; then
+              if [ -z "{{ USER }}" ] || [ -z "$VPN_PASSWORD" ]; then
                 exiterr "Username and password must be provided."
               fi
               if printf '%s' "$VPN_USER $VPN_PASSWORD" | LC_ALL=C grep -q '[^ -~]\+'; then
