@@ -218,10 +218,7 @@ resource "aws_ssm_document" "configure_user" {
   document_type   = "Command"
 
   tags = module.configure_user_context.tags
-  content = templatefile("${path.module}/templates/ssm-vpn-add-user.tftpl", {
-    VPN_USER = var.vpn_user == null ? "" : var.vpn_user
-    VPN_PASSWORD = var.vpn_password == null ? "" : var.vpn_password
-  })
+  content = templatefile("${path.module}/templates/ssm-vpn-add-user.tftpl", {})
 }
 
 
