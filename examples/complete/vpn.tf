@@ -73,6 +73,7 @@ module "vpn" {
   enable_custom_ssl = var.enable_custom_ssl
   #  enable_mysql               = var.enable_mysql
   enable_ec2_cloudwatch_logs = var.enable_ec2_cloudwatch_logs
+  enable_upgrade_vpn = true
 
   # Logging
   cloudwatch_logs_expiration_days = var.cloudwatch_logs_expiration_days
@@ -173,5 +174,6 @@ resource "null_resource" "vpn_set_autoscale_counts" {
     ])
   }
 }
+
 
 
