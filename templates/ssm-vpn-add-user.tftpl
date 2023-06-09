@@ -57,12 +57,6 @@ mainSteps:
                 exit 1
               fi
               command -v openssl >/dev/null 2>&1 || exiterr "'openssl' not found. Abort."
-              if [ $# -ne 2 ]; then
-            cat 1>&2 <<EOF
-            Usage: sudo bash $0 'username_to_add' 'password'
-            EOF
-                exit 1
-              fi
               VPN_USER={{ USER }}
               VPN_PASSWORD={{ PASSWORD }}
               if [ -z "$VPN_USER" ] || [ -z "$VPN_PASSWORD" ]; then
