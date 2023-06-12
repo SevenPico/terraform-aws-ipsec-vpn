@@ -57,8 +57,8 @@ mainSteps:
                 exit 1
               fi
               command -v openssl >/dev/null 2>&1 || exiterr "'openssl' not found. Abort."
-              VPN_USER={{ USER }}
-              VPN_PASSWORD={{ PASSWORD }}
+              VPN_USER="{{ USER }}"
+              VPN_PASSWORD="{{ PASSWORD }}"
               if [ -z "$VPN_USER" ] || [ -z "$VPN_PASSWORD" ]; then
                 exiterr "Username and password must be provided."
               fi
