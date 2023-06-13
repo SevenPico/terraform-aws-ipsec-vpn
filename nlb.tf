@@ -76,7 +76,7 @@ module "nlb" {
   health_check_enabled              = false
   health_check_interval             = 10
   health_check_path                 = "/"
-  health_check_port                 = -1
+  health_check_port                 = null
   health_check_protocol             = "TCP"
   health_check_threshold            = 2
   internal                          = false
