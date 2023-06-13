@@ -172,12 +172,23 @@ module "ec2_autoscale_group_sg" {
   vpc_id                        = var.vpc_id
 }
 
-resource "aws_security_group_rule" "daemon_tcp_port" {
+resource "aws_security_group_rule" "vpn_udp_port" {
   count             = module.context.enabled ? length(var.vpn_daemon_ports) : 0
   from_port         = var.vpn_daemon_ports[count.index]
   protocol          = "udp"
   security_group_id = module.ec2_autoscale_group_sg.id
   to_port           = var.vpn_daemon_ports[count.index]
+  type              = "ingress"
+  cidr_blocks       = var.vpn_daemon_ingress_blocks
+  description       = "Allow access to VPN Daemon."
+}
+
+resource "aws_security_group_rule" "vpn_tcp_port" {
+  count             = module.context.enabled ? 1 : 0
+  from_port         = -1
+  protocol          = "tcp"
+  security_group_id = module.ec2_autoscale_group_sg.id
+  to_port           = -1
   type              = "ingress"
   cidr_blocks       = var.vpn_daemon_ingress_blocks
   description       = "Allow access to VPN Daemon."

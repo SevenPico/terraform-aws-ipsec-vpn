@@ -76,8 +76,8 @@ module "nlb" {
   health_check_enabled              = false
   health_check_interval             = 10
   health_check_path                 = "/"
-  health_check_port                 = 500
-  health_check_protocol             = "HTTPS"
+  health_check_port                 = -1
+  health_check_protocol             = "TCP"
   health_check_threshold            = 2
   internal                          = false
   ip_address_type                   = "ipv4"
@@ -113,9 +113,8 @@ resource "aws_lb_target_group" "nlb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
-    protocol            = "HTTPS"
-    port                = 443
-    path                = "/"
+    protocol            = "TCP"
+    matcher             = "200-299"
   }
   lifecycle {
     create_before_destroy = true
