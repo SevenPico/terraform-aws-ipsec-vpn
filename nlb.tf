@@ -114,7 +114,6 @@ resource "aws_lb_target_group" "nlb" {
     unhealthy_threshold = 2
     interval            = 10
     protocol            = "TCP"
-    matcher             = "200-299"
   }
   lifecycle {
     create_before_destroy = true
