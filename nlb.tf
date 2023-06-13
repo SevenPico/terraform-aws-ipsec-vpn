@@ -112,7 +112,7 @@ resource "aws_lb_target_group" "nlb" {
     enabled             = true
     healthy_threshold   = 3
     unhealthy_threshold = 10
-    interval            = 300
+    interval            = 120
     protocol            = "TCP"
     timeout             = 60
     port                = 4993
