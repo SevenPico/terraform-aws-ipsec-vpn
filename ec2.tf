@@ -185,10 +185,10 @@ resource "aws_security_group_rule" "vpn_udp_port" {
 
 resource "aws_security_group_rule" "vpn_tcp_port" {
   count             = module.context.enabled ? 1 : 0
-  from_port         = -1
+  from_port         = 0
   protocol          = "tcp"
   security_group_id = module.ec2_autoscale_group_sg.id
-  to_port           = -1
+  to_port           = 65536
   type              = "ingress"
   cidr_blocks       = var.vpn_daemon_ingress_blocks
   description       = "Allow access to VPN Daemon."
