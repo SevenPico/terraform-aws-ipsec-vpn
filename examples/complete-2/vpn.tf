@@ -72,7 +72,6 @@ module "vpn" {
   # Enablements
   enable_efs        = var.enable_efs
   enable_custom_ssl = var.enable_custom_ssl
-  #  enable_mysql               = var.enable_mysql
   enable_ec2_cloudwatch_logs = var.enable_ec2_cloudwatch_logs
 
   # Logging

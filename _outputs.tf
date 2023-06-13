@@ -22,10 +22,34 @@ output "autoscale_group_name" {
   value = module.ec2_autoscale_group.autoscaling_group_name
 }
 
+output "autoscale_group_arn" {
+  value = module.ec2_autoscale_group.autoscaling_group_arn
+}
+
 output "nlb_dns_name" {
   value = one(module.nlb[*].nlb_dns_name)
 }
 
 output "nlb_zone_id" {
   value = one(module.nlb[*].nlb_zone_id)
+}
+
+output "autoscale_sns_topic_arn" {
+  value = join("", aws_sns_topic.ec2_autoscale_group.*.arn)
+}
+
+output "role_arn" {
+  value = module.ec2_autoscale_group_role.arn
+}
+
+output "role_name" {
+  value = module.ec2_autoscale_group_role.name
+}
+
+output "lifecycle_role_arn" {
+  value = join("", aws_iam_role.ec2_autoscale_group_lifecycle_role.*.arn)
+}
+
+output "sns_role_arn" {
+  value = join("", aws_iam_role.ec2_autoscale_group_sns.*.arn)
 }

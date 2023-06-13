@@ -10,7 +10,7 @@ variable "create_nlb" {
 
 variable "create_vpn_secret" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "enable_efs" {

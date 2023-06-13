@@ -19,10 +19,10 @@
 ##  This file contains code written by SevenPico, Inc.
 ## ----------------------------------------------------------------------------
 
-output "security_group_id" {
-  value       = join("", aws_security_group.default.*.id)
-  description = "Security Group ID of the Lambda Function"
-}
+#output "security_group_id" {
+#  value       = join("", aws_security_group.default.*.id)
+#  description = "Security Group ID of the Lambda Function"
+#}
 
 output "lambda_function_arn" {
   value       = join("", aws_lambda_function.this.*.arn)

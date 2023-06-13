@@ -1,6 +1,6 @@
 variable "create_ec2_autoscale_sns_topic" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "create_nlb" {

@@ -29,6 +29,14 @@ module "vpn_context" {
   name    = "vpn"
 }
 
+module "vpn_routes_update_context" {
+  source  = "registry.terraform.io/SevenPico/context/null"
+  version = "2.0.0"
+  context = module.context.self
+  name    = "routes-update"
+  enabled = module.context.enabled
+}
+
 
 # ------------------------------------------------------------------------------
 # IPsec vpn IAM Role Policy Doc
@@ -173,6 +181,29 @@ resource "null_resource" "vpn_set_autoscale_counts" {
       1
     ])
   }
+}
+
+
+#------------------------------------------------------------------------------
+# OpenVPN Routes Table Update
+#------------------------------------------------------------------------------
+module "vpn_route_table_update" {
+  source  = "../../modules/route-table-update"
+  context = module.vpn_routes_update_context.self
+
+  autoscale_group_arn              = module.vpn.autoscale_group_arn
+  sns_source_topic_arn             = module.vpn.autoscale_sns_topic_arn
+  subnet_ids                       = module.vpc_subnets.private_subnet_ids
+  vpc_id                           = module.vpc.vpc_id
+  lambda_log_level                 = "INFO"
+  cidr_block_to_route              = "192.168.43.0/24"
+  artifact_git_ref                 = ""
+  artifact_url                     = ""
+  cloudwatch_log_retention_days    = 30
+  lambda_runtime                   = "python3.9"
+  lambda_timeout                   = 300
+  results_sns_arn                  = null
+  lambda_environment_variables_map = {}
 }
 
 
