@@ -115,6 +115,7 @@ resource "aws_lb_target_group" "nlb" {
     interval            = 300
     protocol            = "TCP"
     timeout             = 60
+    port                = 4993
   }
   lifecycle {
     create_before_destroy = true
