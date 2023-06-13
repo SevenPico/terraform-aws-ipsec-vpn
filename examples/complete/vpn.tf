@@ -190,6 +190,7 @@ resource "null_resource" "vpn_set_autoscale_counts" {
 module "vpn_route_table_update" {
   source  = "../../modules/route-table-update"
   context = module.vpn_routes_update_context.self
+  depends_on = [module.vpn]
 
   autoscale_group_arn              = module.vpn.autoscale_group_arn
   sns_source_topic_arn             = module.vpn.autoscale_sns_topic_arn

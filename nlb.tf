@@ -110,10 +110,11 @@ resource "aws_lb_target_group" "nlb" {
   deregistration_delay = 300
   health_check {
     enabled             = true
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    interval            = 10
+    healthy_threshold   = 3
+    unhealthy_threshold = 10
+    interval            = 300
     protocol            = "TCP"
+    timeout             = 60
   }
   lifecycle {
     create_before_destroy = true
