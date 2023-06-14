@@ -105,7 +105,7 @@ module "vpn" {
   ec2_additional_security_group_ids         = var.ec2_additional_security_group_ids
   ec2_block_device_mappings                 = []
   ec2_disable_api_termination               = false
-  ec2_role_source_policy_documents          = [] #try(data.aws_iam_policy_document.vpn_ec2_policy_doc.*.json, [])
+  ec2_role_source_policy_documents          = try(data.aws_iam_policy_document.vpn_ec2_policy_doc.*.json, [])
   ec2_upgrade_schedule_expression           = var.ec2_upgrade_schedule_expression
   ec2_security_group_allow_all_egress       = var.ec2_security_group_allow_all_egress
   ec2_security_group_rules = [

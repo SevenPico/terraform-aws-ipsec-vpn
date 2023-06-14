@@ -95,11 +95,6 @@ variable "vpn_daemon_ingress_blocks" {
   default = ["0.0.0.0/0"]
 }
 
-variable "vpn_ssm_association_output_bucket_name" {
-  type    = string
-  default = null
-}
-
 variable "vpn_secret_admin_password_key" {
   type    = string
   default = "ADMIN_PASSWORD"

@@ -53,13 +53,6 @@ resource "aws_ssm_association" "composite_installer" {
     key    = "tag:Name"
     values = [module.context.id]
   }
-  dynamic "output_location" {
-    for_each = var.vpn_ssm_association_output_bucket_name != null ? [1] : []
-    content {
-      s3_bucket_name = var.vpn_ssm_association_output_bucket_name
-      s3_key_prefix  = try(aws_ssm_document.composite_installer[0].name, "")
-    }
-  }
 }
 
 

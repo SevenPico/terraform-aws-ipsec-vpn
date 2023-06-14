@@ -132,25 +132,6 @@ data "aws_iam_policy_document" "ec2_autoscale_group_role_policy" {
   }
 
   dynamic "statement" {
-    for_each = var.vpn_ssm_association_output_bucket_name != null ? [1] : []
-    content {
-      actions = [
-        "s3:ListBucket",
-        "s3:GetBucketLocation",
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:ListMultipartUploadParts",
-        "s3:AbortMultipartUpload",
-      ]
-      effect = "Allow"
-      resources = [
-        "arn:aws:s3:::${var.vpn_ssm_association_output_bucket_name}",
-        "arn:aws:s3:::${var.vpn_ssm_association_output_bucket_name}/*"
-      ]
-    }
-  }
-
-  dynamic "statement" {
     for_each = local.secret_kms_key_arn != null ? [1] : []
     content {
       actions = [
