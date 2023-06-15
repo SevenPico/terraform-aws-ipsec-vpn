@@ -219,29 +219,7 @@ resource "aws_ssm_document" "add_user" {
 
 
 #------------------------------------------------------------------------------
-# Vpn Upgrade
-#------------------------------------------------------------------------------
-module "upgrade_vpn_context" {
-  source     = "SevenPico/context/null"
-  version    = "2.0.0"
-  context    = module.context.self
-  enabled    = module.context.enabled && var.enable_upgrade_vpn
-  attributes = ["upgrade", "vpn"]
-}
-
-resource "aws_ssm_document" "upgrade_vpn" {
-  count           = module.add_user_context.enabled ? 1 : 0
-  name            = module.add_user_context.id
-  document_format = "YAML"
-  document_type   = "Command"
-
-  tags    = module.add_user_context.tags
-  content = templatefile("${path.module}/templates/ssm-vpn-upgrade.tftpl", {})
-}
-
-
-#------------------------------------------------------------------------------
-# Vpn Upgrade
+# Vpn Add Client Profiles
 #------------------------------------------------------------------------------
 module "add_client_profile_context" {
   source     = "SevenPico/context/null"
@@ -264,5 +242,27 @@ resource "aws_ssm_document" "add_client_profile" {
       client_name = var.client_name
   })
 }
+
+
+#------------------------------------------------------------------------------
+# Vpn Upgrade
+#------------------------------------------------------------------------------
+#module "upgrade_vpn_context" {
+#  source     = "SevenPico/context/null"
+#  version    = "2.0.0"
+#  context    = module.context.self
+#  enabled    = module.context.enabled && var.enable_upgrade_vpn
+#  attributes = ["upgrade", "vpn"]
+#}
+#
+#resource "aws_ssm_document" "upgrade_vpn" {
+#  count           = module.add_user_context.enabled ? 1 : 0
+#  name            = module.add_user_context.id
+#  document_format = "YAML"
+#  document_type   = "Command"
+#
+#  tags    = module.add_user_context.tags
+#  content = templatefile("${path.module}/templates/ssm-vpn-upgrade.tftpl", {})
+#}
 
 

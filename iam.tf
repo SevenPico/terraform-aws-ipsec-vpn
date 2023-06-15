@@ -53,13 +53,6 @@ module "ec2_autoscale_group_sns_role_context" {
 #------------------------------------------------------------------------------
 # EC2 VPN ASG IAM
 #------------------------------------------------------------------------------
-locals {
-  #  secrets_arns_a = [one(data.aws_secretsmanager_secret.ssl.*.arn)]
-  #  secrets_arns_b = [var.rds_secret_arn]
-  current_region     = try(data.aws_region.current[0].name, "")
-  current_account_id = try(data.aws_caller_identity.current[0].account_id, "")
-}
-
 data "aws_iam_policy_document" "ec2_autoscale_group_role_policy" {
   count                   = module.context.enabled ? 1 : 0
   version                 = "2012-10-17"
@@ -302,6 +295,6 @@ data "aws_iam_policy_document" "ec2_autoscale_group_sns_policy" {
 resource "aws_iam_role_policy" "ec2_openvpn_asg_iam_sns_policy" {
   count  = module.ec2_autoscale_group_sns_role_context.enabled ? 1 : 0
   name   = "${module.ec2_autoscale_group_sns_role_context.id}-policy"
-  role   = one(aws_iam_role.ec2_autoscale_group_sns[*].id)
-  policy = one(data.aws_iam_policy_document.ec2_autoscale_group_sns_policy[*].json)
+  role   = try(aws_iam_role.ec2_autoscale_group_sns[*].id)
+  policy = try(data.aws_iam_policy_document.ec2_autoscale_group_sns_policy.*.json, [])
 }
