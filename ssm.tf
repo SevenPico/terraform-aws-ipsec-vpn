@@ -133,7 +133,10 @@ resource "aws_ssm_document" "install_default" {
   document_type   = "Command"
 
   tags = module.install_with_defaults_context.tags
-  content = templatefile("${path.module}/templates/ssm-install-default.tftpl",{})
+  content = templatefile("${path.module}/templates/ssm-install-default.tftpl",
+    {
+      s3_bucket = module.s3_bucket.bucket_id
+  })
 }
 
 
@@ -210,7 +213,7 @@ resource "aws_ssm_document" "add_user" {
   document_format = "YAML"
   document_type   = "Command"
 
-  tags = module.add_user_context.tags
+  tags    = module.add_user_context.tags
   content = templatefile("${path.module}/templates/ssm-vpn-add-user.tftpl", {})
 }
 
@@ -232,7 +235,7 @@ resource "aws_ssm_document" "upgrade_vpn" {
   document_format = "YAML"
   document_type   = "Command"
 
-  tags = module.add_user_context.tags
+  tags    = module.add_user_context.tags
   content = templatefile("${path.module}/templates/ssm-vpn-upgrade.tftpl", {})
 }
 
@@ -257,8 +260,8 @@ resource "aws_ssm_document" "add_client_profile" {
   tags = module.add_user_context.tags
   content = templatefile("${path.module}/templates/ssm-vpn-add-clients.tftpl",
     {
-    s3_backup_bucket          = module.s3_bucket.bucket_id
-    client_name               = var.client_name
+      s3_bucket   = module.s3_bucket.bucket_id
+      client_name = var.client_name
   })
 }
 
