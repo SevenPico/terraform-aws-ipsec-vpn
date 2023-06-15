@@ -1,6 +1,6 @@
 variable "create_ec2_autoscale_sns_topic" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "create_vpn_secret" {
