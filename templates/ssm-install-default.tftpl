@@ -2,6 +2,10 @@
 schemaVersion: "2.2"
 description: Run apt-get upgrade on OS.
 parameters:
+  S3BUCKET:
+    description: The S3 Bucket where the backup is.
+    type: String
+    default: "${s3_bucket}"
 mainSteps:
   - action: aws:runShellScript
     name: InstallIpsecVpn

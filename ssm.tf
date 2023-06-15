@@ -196,21 +196,21 @@ resource "aws_ssm_document" "configure_ssl" {
 #------------------------------------------------------------------------------
 # Configure User
 #------------------------------------------------------------------------------
-module "configure_user_context" {
+module "add_user_context" {
   source     = "SevenPico/context/null"
   version    = "2.0.0"
   context    = module.context.self
   enabled    = module.context.enabled
-  attributes = ["configure", "user"]
+  attributes = ["add", "user"]
 }
 
-resource "aws_ssm_document" "configure_user" {
-  count           = module.configure_user_context.enabled ? 1 : 0
-  name            = module.configure_user_context.id
+resource "aws_ssm_document" "add_user" {
+  count           = module.add_user_context.enabled ? 1 : 0
+  name            = module.add_user_context.id
   document_format = "YAML"
   document_type   = "Command"
 
-  tags = module.configure_user_context.tags
+  tags = module.add_user_context.tags
   content = templatefile("${path.module}/templates/ssm-vpn-add-user.tftpl", {})
 }
 
@@ -227,13 +227,39 @@ module "upgrade_vpn_context" {
 }
 
 resource "aws_ssm_document" "upgrade_vpn" {
-  count           = module.configure_user_context.enabled ? 1 : 0
-  name            = module.configure_user_context.id
+  count           = module.add_user_context.enabled ? 1 : 0
+  name            = module.add_user_context.id
   document_format = "YAML"
   document_type   = "Command"
 
-  tags = module.configure_user_context.tags
+  tags = module.add_user_context.tags
   content = templatefile("${path.module}/templates/ssm-vpn-upgrade.tftpl", {})
+}
+
+
+#------------------------------------------------------------------------------
+# Vpn Upgrade
+#------------------------------------------------------------------------------
+module "add_client_profile_context" {
+  source     = "SevenPico/context/null"
+  version    = "2.0.0"
+  context    = module.context.self
+  enabled    = module.context.enabled
+  attributes = ["add", "profile"]
+}
+
+resource "aws_ssm_document" "add_client_profile" {
+  count           = module.add_client_profile_context.enabled ? 1 : 0
+  name            = module.add_client_profile_context.id
+  document_format = "YAML"
+  document_type   = "Command"
+
+  tags = module.add_user_context.tags
+  content = templatefile("${path.module}/templates/ssm-vpn-add-clients.tftpl",
+    {
+    s3_backup_bucket          = module.s3_bucket.bucket_id
+    client_name               = var.client_name
+  })
 }
 
 

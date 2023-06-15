@@ -136,6 +136,10 @@ variable "vpn_password" {
   default = ""
 }
 
+variable "client_name" {
+  default = null
+}
+
 
 #------------------------------------------------------------------------------
 # SSL Inputs

@@ -68,8 +68,8 @@ module "vpn" {
 
 
   # REQUIRED
-  subnet_ids             = module.vpc_subnets.public_subnet_ids
-  vpc_id = module.vpc.vpc_id
+  subnet_ids   = module.vpc_subnets.public_subnet_ids
+  vpc_id       = module.vpc.vpc_id
   vpn_hostname = module.vpn_context.dns_name
 
   # Create Options
@@ -81,7 +81,7 @@ module "vpn" {
   enable_custom_ssl = var.enable_custom_ssl
   #  enable_mysql               = var.enable_mysql
   enable_ec2_cloudwatch_logs = var.enable_ec2_cloudwatch_logs
-  enable_upgrade_vpn = true
+  enable_upgrade_vpn         = true
 
   # Logging
   cloudwatch_logs_expiration_days = var.cloudwatch_logs_expiration_days
@@ -149,19 +149,19 @@ module "vpn" {
   s3_source_policy_documents = var.s3_source_policy_documents
 
   # VPN
-  vpn_daemon_ingress_blocks           = var.vpn_daemon_ingress_blocks
-  s3_access_logs_prefix_override      = var.s3_access_logs_prefix_override
-  s3_access_logs_s3_bucket_id         = var.s3_access_logs_s3_bucket_id
-  s3_force_destroy                    = var.s3_force_destroy
-  s3_lifecycle_configuration_rules    = var.s3_lifecycle_configuration_rules
-  s3_versioning_enabled               = var.s3_versioning_enabled
-  vpn_secret_admin_password_key       = var.vpn_secret_admin_password_key
-  vpn_secret_arn                      = var.vpn_secret_arn
-  vpn_secret_enable_kms_key_rotation  = var.vpn_secret_enable_kms_key_rotation
-  vpn_secret_kms_key_arn              = var.vpn_secret_kms_key_arn
-  vpn_user = null
-  vpn_password = null
-  s3_object_ownership                 = var.s3_object_ownership
+  vpn_daemon_ingress_blocks          = var.vpn_daemon_ingress_blocks
+  s3_access_logs_prefix_override     = var.s3_access_logs_prefix_override
+  s3_access_logs_s3_bucket_id        = var.s3_access_logs_s3_bucket_id
+  s3_force_destroy                   = var.s3_force_destroy
+  s3_lifecycle_configuration_rules   = var.s3_lifecycle_configuration_rules
+  s3_versioning_enabled              = var.s3_versioning_enabled
+  vpn_secret_admin_password_key      = var.vpn_secret_admin_password_key
+  vpn_secret_arn                     = var.vpn_secret_arn
+  vpn_secret_enable_kms_key_rotation = var.vpn_secret_enable_kms_key_rotation
+  vpn_secret_kms_key_arn             = var.vpn_secret_kms_key_arn
+  vpn_user                           = null
+  vpn_password                       = null
+  s3_object_ownership                = var.s3_object_ownership
 }
 
 # Delays VPN initialization until all resources are in place
@@ -188,8 +188,8 @@ resource "null_resource" "vpn_set_autoscale_counts" {
 # OpenVPN Routes Table Update
 #------------------------------------------------------------------------------
 module "vpn_route_table_update" {
-  source  = "../../modules/route-table-update"
-  context = module.vpn_routes_update_context.self
+  source     = "../../modules/route-table-update"
+  context    = module.vpn_routes_update_context.self
   depends_on = [module.vpn]
 
   autoscale_group_arn              = module.vpn.autoscale_group_arn

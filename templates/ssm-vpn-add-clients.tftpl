@@ -1,0 +1,27 @@
+---
+schemaVersion: '2.2'
+description: Backup an SQLite OpenVPN EC2 instance. This document refers to the backup script that is stored on the EC2 instance as a result of the VPN Initialization SSM Document.
+parameters:
+  S3BUCKET:
+    description: The S3 Bucket Where the Client Profiles are.
+    type: String
+    default: "${s3_bucket}"
+  CLIENTNAME:
+    description: Client Name To Create Profiles.
+    type: String
+    default: "${client_name}"
+mainSteps:
+  - action: aws:runShellScript
+    name: backupSqlite
+    inputs:
+      timeoutSeconds: '3600'
+      runCommand:
+        - |
+          #!/bin/bash
+          if ! command -v /usr/bin/ikev2.sh &> /dev/null; then
+            echo "Adding {{ CLIENTNAME }} client Profile..."
+            sudo /usr/bin/ikev2.sh --addclient {{ CLIENTNAME }}
+            #upload client file to s3
+          else
+            echo "Ikev2 command not found..."
+          fi

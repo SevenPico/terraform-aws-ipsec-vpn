@@ -3,11 +3,6 @@ variable "create_ec2_autoscale_sns_topic" {
   default = true
 }
 
-variable "create_nlb" {
-  type    = bool
-  default = true
-}
-
 variable "create_vpn_secret" {
   type    = bool
   default = false
