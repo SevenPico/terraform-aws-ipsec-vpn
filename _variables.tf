@@ -137,7 +137,7 @@ variable "vpn_password" {
 }
 
 variable "client_name" {
-  default = null
+  default = ""
 }
 
 
