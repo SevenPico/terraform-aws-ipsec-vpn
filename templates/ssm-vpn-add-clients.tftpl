@@ -10,6 +10,10 @@ parameters:
     description: Client Name To Create Profiles.
     type: String
     default: "${client_name}"
+  REGION:
+    description: AWS Region.
+    type: String
+    default: "${region}"
 mainSteps:
   - action: aws:runShellScript
     name: backupSqlite
@@ -19,5 +23,7 @@ mainSteps:
         - |
           #!/bin/bash
           echo "Adding {{ CLIENTNAME }} client Profile..."
-          sudo /usr/bin/ikev2.sh --addclient {{ CLIENTNAME }}
-          #upload client file to s3
+          sudo /usr/bin/ikev2.sh --addclient {{ CLIENTNAME }} > README.MD
+          # Zip and upload client files to s3
+          sudo zip {{ CLIENTNAME }}.zip /root/{{ CLIENTNAME }}.{p12,sswan,mobileconfig}
+          sudo aws s3 cp {{ CLIENTNAME }}.zip --region {{ region }} s3://{{ SBUCKET }}/clients/{{ CLIENTNAME }}.zip
