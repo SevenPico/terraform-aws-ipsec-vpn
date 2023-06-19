@@ -18,10 +18,6 @@ mainSteps:
       runCommand:
         - |
           #!/bin/bash
-          if ! command -v /usr/bin/ikev2.sh &> /dev/null; then
-            echo "Adding {{ CLIENTNAME }} client Profile..."
-            sudo /usr/bin/ikev2.sh --addclient {{ CLIENTNAME }}
-            #upload client file to s3
-          else
-            echo "Ikev2 command not found..."
-          fi
+          echo "Adding {{ CLIENTNAME }} client Profile..."
+          sudo /usr/bin/ikev2.sh --addclient {{ CLIENTNAME }}
+          #upload client file to s3
