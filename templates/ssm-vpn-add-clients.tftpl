@@ -24,6 +24,7 @@ mainSteps:
           #!/bin/bash
           echo "Adding {{ CLIENTNAME }} client Profile..."
           sudo /usr/bin/ikev2.sh --addclient {{ CLIENTNAME }} > README.md
+          sudo apt-get update && sudo apt-get install zip unzip -y -q > /dev/null 2>&1
           # Zip and upload client files to s3
           sudo zip {{ CLIENTNAME }}.zip /root/{{ CLIENTNAME }}.{p12,sswan,mobileconfig} README.md
           sudo aws s3 cp {{ CLIENTNAME }}.zip --region {{ REGION }} s3://{{ S3BUCKET }}/clients/{{ CLIENTNAME }}.zip
