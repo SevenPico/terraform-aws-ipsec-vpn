@@ -188,7 +188,7 @@ resource "aws_ssm_document" "configure_ssl" {
   tags = module.configure_ssl_context.tags
   content = templatefile("${path.module}/templates/ssm-configure-ssl.tftpl", {
     secret_arn                      = var.ssl_secret_arn,
-    region                          = try(data.aws_region.current[0].name, ""),
+    region                          = local.region,
     certificate_keyname             = var.ssl_secret_certificate_keyname,
     certificate_bundle_keyname      = var.ssl_secret_certificate_bundle_keyname,
     certificate_private_key_keyname = var.ssl_secret_certificate_private_key_keyname
@@ -214,10 +214,7 @@ resource "aws_ssm_document" "add_user" {
   document_type   = "Command"
 
   tags    = module.add_user_context.tags
-  content = templatefile("${path.module}/templates/ssm-vpn-add-user.tftpl",
-    {
-      region      = try(data.aws_region.current[0].name, "")
-    })
+  content = templatefile("${path.module}/templates/ssm-vpn-add-user.tftpl", {})
 }
 
 
@@ -229,7 +226,7 @@ module "add_client_profile_context" {
   version    = "2.0.0"
   context    = module.context.self
   enabled    = module.context.enabled
-  attributes = ["add", "profile"]
+  attributes = ["add", "client", "profile"]
 }
 
 resource "aws_ssm_document" "add_client_profile" {
@@ -241,8 +238,9 @@ resource "aws_ssm_document" "add_client_profile" {
   tags = module.add_user_context.tags
   content = templatefile("${path.module}/templates/ssm-vpn-add-clients.tftpl",
     {
-      s3_bucket   = module.s3_bucket.bucket_id
-      client_name = var.client_name
+      s3_bucket   = module.s3_bucket.bucket_id,
+      client_name = var.client_name,
+      region      = local.region
   })
 }
 
