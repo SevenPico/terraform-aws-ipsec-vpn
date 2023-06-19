@@ -213,22 +213,13 @@ data "aws_iam_policy_document" "ec2_autoscale_group_lifecycle_role_policy" {
       module.ec2_autoscale_group.autoscaling_group_arn
     ]
   }
-  #  statement {
-  #    effect = "Allow"
-  #    actions = [
-  #      "sns:Publish"
-  #    ]
-  #    resources = [
-  #      aws_sns_topic.ec2_autoscale_group[*].arn
-  #    ]
-  #  }
 }
 
 resource "aws_iam_role_policy" "ec2_autoscale_group_lifecycle_policy" {
   count  = module.ec2_autoscale_group_lifecycle_role_context.enabled ? 1 : 0
   name   = module.ec2_autoscale_group_lifecycle_policy_context.id
-  role   = one(aws_iam_role.ec2_autoscale_group_lifecycle_role[*].id)
-  policy = one(data.aws_iam_policy_document.ec2_autoscale_group_lifecycle_role_policy[*].json)
+  role   = join("",aws_iam_role.ec2_autoscale_group_lifecycle_role.*.id)
+  policy = join("",data.aws_iam_policy_document.ec2_autoscale_group_lifecycle_role_policy.*.json)
 }
 
 
@@ -251,7 +242,7 @@ data "aws_iam_policy_document" "ec2_autoscale_group_lifecycle_role_sns_policy" {
 resource "aws_iam_role_policy" "ec2_autoscale_group_lifecycle_sns_policy" {
   count  = module.ec2_autoscale_group_lifecycle_role_context.enabled && module.ec2_autoscale_group_sns_context.enabled ? 1 : 0
   name   = "${module.ec2_autoscale_group_lifecycle_policy_context.id}-sns"
-  role   = one(aws_iam_role.ec2_autoscale_group_lifecycle_role[*].id)
+  role   = join("",aws_iam_role.ec2_autoscale_group_lifecycle_role[*].id)
   policy = join("", data.aws_iam_policy_document.ec2_autoscale_group_lifecycle_role_sns_policy.*.json)
 }
 
@@ -295,6 +286,6 @@ data "aws_iam_policy_document" "ec2_autoscale_group_sns_policy" {
 resource "aws_iam_role_policy" "ec2_openvpn_asg_iam_sns_policy" {
   count  = module.ec2_autoscale_group_sns_role_context.enabled ? 1 : 0
   name   = "${module.ec2_autoscale_group_sns_role_context.id}-policy"
-  role   = try(aws_iam_role.ec2_autoscale_group_sns[*].id)
+  role   = join("", aws_iam_role.ec2_autoscale_group_sns[*].id)
   policy = join("" , data.aws_iam_policy_document.ec2_autoscale_group_sns_policy.*.json)
 }
